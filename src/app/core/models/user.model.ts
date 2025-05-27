@@ -1,10 +1,13 @@
+export type UserRole = 'admin' | 'teacher' | 'student';
+
 export interface User {
   id: number;
   username: string;
-  role: 'admin' | 'teacher' | 'student';
+  role: UserRole;
   nom: string;
   prenom: string;
   email: string;
+  class_id?: number;
   class_name?: string;
   last_login?: string;
   status?: 'Actif' | 'Inactif';

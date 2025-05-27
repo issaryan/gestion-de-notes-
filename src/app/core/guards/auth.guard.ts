@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -7,18 +7,25 @@ import { AuthService } from '../services/auth.service';
 })
 export class AuthGuard implements CanActivate {
   constructor(
-    private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.authService.isAuthenticated()) {
-      const requiredRole = route.data['role'];
-      if (requiredRole && !this.authService.hasRole(requiredRole)) {
-        this.router.navigate(['/unauthorized']);
-        return false;
+      const user = this.authService.getCurrentUser();
+      const requiredRoles = route.data['roles'] as string[];
+
+      if (!requiredRoles || !user) {
+        return true;
       }
-      return true;
+
+      if (requiredRoles.includes(user.role)) {
+        return true;
+      }
+
+      this.router.navigate(['/unauthorized']);
+      return false;
     }
 
     this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
