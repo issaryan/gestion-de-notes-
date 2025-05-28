@@ -1,0 +1,39 @@
+<div class="flex align-items-center justify-content-center min-h-screen bg-blue-50">
+  <p-card styleClass="w-full md:w-6 lg:w-4">
+    <ng-template pTemplate="header">
+      <div class="text-center p-3">
+        <h1 class="text-3xl font-bold text-blue-900 m-0">Academy Manager</h1>
+        <p class="text-600 mt-2">Connectez-vous à votre compte</p>
+      </div>
+    </ng-template>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-column gap-3">
+      <div class="field">
+        <label for="username" class="block text-900 font-medium mb-2">Nom d'utilisateur</label>
+        <input id="username" type="text" pInputText formControlName="username" 
+               class="w-full" [disabled]="loading">
+        <small class="text-red-500" *ngIf="loginForm.get('username')?.errors?.['required'] && 
+               loginForm.get('username')?.touched">
+          Le nom d'utilisateur est requis
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="password" class="block text-900 font-medium mb-2">Mot de passe</label>
+        <p-password id="password" formControlName="password" [toggleMask]="true"
+                    styleClass="w-full" [disabled]="loading">
+        </p-password>
+        <small class="text-red-500" *ngIf="loginForm.get('password')?.errors?.['required'] && 
+               loginForm.get('password')?.touched">
+          Le mot de passe est requis
+        </small>
+      </div>
+
+      <p-message severity="error" *ngIf="error" [text]="error" styleClass="w-full mb-3"></p-message>
+
+      <button pButton type="submit" [label]="loading ? 'Connexion...' : 'Se connecter'"
+              [loading]="loading" [disabled]="loginForm.invalid || loading"
+              class="w-full"></button>
+    </form>
+  </p-card>
+</div>

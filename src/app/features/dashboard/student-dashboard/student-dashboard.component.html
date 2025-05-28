@@ -1,0 +1,93 @@
+<div class="grid p-4">
+  <!-- En-tête -->
+  <div class="col-12">
+    <p-card>
+      <div class="flex align-items-center justify-content-between">
+        <div class="flex align-items-center">
+          <i class="pi pi-user text-4xl text-primary mr-3"></i>
+          <div>
+            <h2 class="m-0">{{currentUser?.prenom}} {{currentUser?.nom}}</h2>
+            <p class="text-600 m-0">{{currentUser?.class_name}}</p>
+          </div>
+        </div>
+        <button pButton label="Télécharger le relevé" 
+                icon="pi pi-download" 
+                (click)="downloadTranscript()"
+                [disabled]="loading"></button>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Moyennes par matière -->
+  <div class="col-12 lg:col-8">
+    <p-card header="Moyennes par matière">
+      <div *ngIf="loading" class="flex justify-content-center">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
+      <p-chart *ngIf="!loading && gradeChartData" 
+               type="bar" 
+               [data]="gradeChartData" 
+               [options]="gradeChartOptions"></p-chart>
+    </p-card>
+  </div>
+
+  <!-- Dernières notes -->
+  <div class="col-12 lg:col-4">
+    <p-card header="Dernières notes">
+      <p-table [value]="grades.slice(0, 5)" [loading]="loading" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Matière</th>
+            <th>Note</th>
+            <th>Date</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-grade>
+          <tr>
+            <td>{{grade.subject}}</td>
+            <td>{{grade.grade}}/20</td>
+            <td>{{grade.evaluation_date | date:'dd/MM/yyyy'}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="3" class="text-center p-4">
+              Aucune note enregistrée
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+
+  <!-- Emploi du temps -->
+  <div class="col-12">
+    <p-card header="Emploi du temps de la semaine">
+      <p-table [value]="schedule" [loading]="loading" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Jour</th>
+            <th>Horaire</th>
+            <th>Matière</th>
+            <th>Professeur</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-entry>
+          <tr>
+            <td>{{entry.day}}</td>
+            <td>{{entry.start_time}} - {{entry.end_time}}</td>
+            <td>{{entry.subject_name}}</td>
+            <td>{{entry.teacher_name}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center p-4">
+              Aucun cours programmé
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>

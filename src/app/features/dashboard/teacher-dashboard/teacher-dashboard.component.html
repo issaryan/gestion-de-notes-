@@ -1,0 +1,95 @@
+<div class="grid p-4">
+  <!-- En-tête -->
+  <div class="col-12">
+    <p-card>
+      <div class="flex align-items-center">
+        <i class="pi pi-user text-4xl text-primary mr-3"></i>
+        <div>
+          <h2 class="m-0">Bienvenue, {{currentUser?.prenom}} {{currentUser?.nom}}</h2>
+          <p class="text-600 m-0">Tableau de bord enseignant</p>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Emploi du temps du jour -->
+  <div class="col-12 lg:col-8">
+    <p-card header="Emploi du temps du jour">
+      <p-table [value]="schedule" [loading]="loading" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Horaire</th>
+            <th>Classe</th>
+            <th>Matière</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-entry>
+          <tr>
+            <td>{{entry.start_time}} - {{entry.end_time}}</td>
+            <td>{{entry.class_name}}</td>
+            <td>{{entry.subject_name}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="3" class="text-center p-4">
+              Aucun cours prévu aujourd'hui
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="col-12 lg:col-4">
+    <p-card header="Actions rapides">
+      <div class="flex flex-column gap-2">
+        <button pButton label="Saisir des notes" 
+                icon="pi pi-pencil" 
+                class="p-button-outlined w-full"
+                routerLink="/grades/new"></button>
+        <button pButton label="Voir mes classes" 
+                icon="pi pi-users" 
+                class="p-button-outlined w-full"
+                routerLink="/classes"></button>
+        <button pButton label="Gérer mon emploi du temps" 
+                icon="pi pi-calendar" 
+                class="p-button-outlined w-full"
+                routerLink="/schedule"></button>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Liste des étudiants -->
+  <div class="col-12">
+    <p-card header="Mes étudiants">
+      <p-table [value]="students" [loading]="loading" 
+               styleClass="p-datatable-sm" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nom</th>
+            <th>Classe</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-student>
+          <tr>
+            <td>{{student.prenom}} {{student.nom}}</td>
+            <td>{{student.class_name}}</td>
+            <td>{{student.email}}</td>
+            <td>
+              <button pButton icon="pi pi-eye" 
+                      class="p-button-rounded p-button-text p-button-sm"
+                      [routerLink]="['/students', student.id]"></button>
+              <button pButton icon="pi pi-file" 
+                      class="p-button-rounded p-button-text p-button-sm"
+                      [routerLink]="['/grades', student.id]"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<div class="grid p-4">
+  <!-- Statistiques -->
+  <div class="col-12">
+    <div class="grid">
+      <div class="col-12 md:col-3">
+        <p-card styleClass="bg-blue-50">
+          <div class="text-center">
+            <i class="pi pi-users text-4xl text-blue-600 mb-3"></i>
+            <h3 class="text-xl font-bold m-0">{{userStats.total}}</h3>
+            <p class="text-600">Utilisateurs Total</p>
+          </div>
+        </p-card>
+      </div>
+      <div class="col-12 md:col-3">
+        <p-card styleClass="bg-green-50">
+          <div class="text-center">
+            <i class="pi pi-check-circle text-4xl text-green-600 mb-3"></i>
+            <h3 class="text-xl font-bold m-0">{{userStats.active}}</h3>
+            <p class="text-600">Utilisateurs Actifs</p>
+          </div>
+        </p-card>
+      </div>
+      <div class="col-12 md:col-3">
+        <p-card styleClass="bg-yellow-50">
+          <div class="text-center">
+            <i class="pi pi-user text-4xl text-yellow-600 mb-3"></i>
+            <h3 class="text-xl font-bold m-0">{{userStats.teachers}}</h3>
+            <p class="text-600">Enseignants</p>
+          </div>
+        </p-card>
+      </div>
+      <div class="col-12 md:col-3">
+        <p-card styleClass="bg-purple-50">
+          <div class="text-center">
+            <i class="pi pi-book text-4xl text-purple-600 mb-3"></i>
+            <h3 class="text-xl font-bold m-0">{{userStats.students}}</h3>
+            <p class="text-600">Étudiants</p>
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Utilisateurs récents -->
+  <div class="col-12 lg:col-6">
+    <p-card header="Utilisateurs Récents">
+      <p-table [value]="recentUsers" [loading]="loading" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nom</th>
+            <th>Rôle</th>
+            <th>Statut</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+          <tr>
+            <td>{{user.prenom}} {{user.nom}}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'bg-yellow-100 text-yellow-900': user.role === 'teacher',
+                'bg-blue-100 text-blue-900': user.role === 'student',
+                'bg-purple-100 text-purple-900': user.role === 'admin'
+              }">
+                {{user.role}}
+              </span>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'bg-green-100 text-green-900': user.status === 'Actif',
+                'bg-red-100 text-red-900': user.status === 'Inactif'
+              }">
+                {{user.status}}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="col-12 lg:col-6">
+    <p-card header="Actions Rapides">
+      <div class="grid">
+        <div class="col-6">
+          <button pButton label="Ajouter un utilisateur" 
+                  icon="pi pi-user-plus" 
+                  class="p-button-outlined w-full mb-2"
+                  routerLink="/users/new"></button>
+        </div>
+        <div class="col-6">
+          <button pButton label="Créer une classe" 
+                  icon="pi pi-plus-circle" 
+                  class="p-button-outlined w-full mb-2"
+                  routerLink="/classes/new"></button>
+        </div>
+        <div class="col-6">
+          <button pButton label="Gérer les emplois du temps" 
+                  icon="pi pi-calendar" 
+                  class="p-button-outlined w-full mb-2"
+                  routerLink="/schedule"></button>
+        </div>
+        <div class="col-6">
+          <button pButton label="Voir les rapports" 
+                  icon="pi pi-chart-bar" 
+                  class="p-button-outlined w-full mb-2"
+                  routerLink="/reports"></button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>
